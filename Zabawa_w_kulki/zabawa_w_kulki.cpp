@@ -7,7 +7,7 @@ public:
     long double coordinateX;
     long double coordinateY;
 
-    Point(int x1 = 0, int y1 = 0)
+    Point(long double x1 = 0.0L, long double y1 = 0.0L)
         : coordinateX(x1),
           coordinateY(y1) {}
 };
