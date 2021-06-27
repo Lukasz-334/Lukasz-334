@@ -44,7 +44,7 @@ int main() {
     int number_of_points = 0;
     int begin_point = -1;
     Player winner;
-
+    std::cout<<"enter the coordinates ";
     std::cin >> coordinate_x;
     std::cin >> coordinate_y;
     std::cin >> radius;
