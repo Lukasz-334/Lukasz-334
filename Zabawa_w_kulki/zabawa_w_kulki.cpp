@@ -27,7 +27,7 @@ Player::Player(std::string n, int ht)
     : name(n), hit_throws(ht) {}
 
 bool PointInsideCircle(Point& target, long double radius2, Point& players) {
-    long double a = sqrt(pow(target.coordinateX - players.coordinateX, 2) + pow(target.coordinateY - players.coordinateY, 2))-EPS;
+    long double a = sqrt(pow(target.coordinateX - players.coordinateX, 2) + pow(target.coordinateY - players.coordinateY, 2)) - EPS;
 
     return a < radius2;
 }
@@ -73,9 +73,8 @@ int main() {
         }
         number_of_points = 0;
     }
-    std::cout<<"Winer is "<<std::endl;
+
     winner.print();
-    
 
     return 0;
 }
