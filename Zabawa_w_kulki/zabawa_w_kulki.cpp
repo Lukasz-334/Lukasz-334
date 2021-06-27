@@ -73,7 +73,7 @@ int main() {
         }
         number_of_points = 0;
     }
-    
+    std::cout<<"Winer is "<<std::endl;
     winner.print();
     
 
