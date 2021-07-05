@@ -1,19 +1,9 @@
 #include <cmath>
 #include <iostream>
-#include <vector>
+
 typedef unsigned long long ull;
 
-ull NWD(ull lhs, ull rhs) {
-    ull r = 0;
-    while (rhs > 0) {
-        r = lhs % rhs;
-        lhs = rhs;
-        rhs = r;
-    }
-    return lhs;
-}
-
-ull NWW(ull lhs, ull rhs) {
+ull NWW(ull& lhs, ull& rhs) {
     ull a = std::max(lhs, rhs);
     ull b = std::min(lhs, rhs);
 
@@ -29,77 +19,74 @@ ull NWW(ull lhs, ull rhs) {
     }
 }
 
-struct Triangle {
+void test(ull& sideX, ull& sideY, ull& sideZ) {
+    if ((sideX < sideY + sideZ) && (sideY < sideZ + sideX) && (sideZ < sideX + sideY)) {
+        std::cout << "TAK" << std::endl;
+    } else {
+        std::cout << "NIE" << std::endl;
+    }
+}
+
+int main() {
+    ull a, b, c, d, e, f;
+    int numberOfTests = 0;
+    char sign;
+    ull nwwX = 0;
+    ull nww = 0;
     ull sideA = 0;
     ull sideB = 0;
     ull sideC = 0;
 
-    Triangle(void);
-    Triangle(ull x1, ull x2, ull x3) {
-        sideA = x1;
-        sideB = x2;
-        sideC = x3;
-    }
-
-    bool triangleTest() {
-        return ((sideA < sideB + sideC) && (sideB < sideC + sideA) && (sideC < sideA + sideB));
-    }
-};
-
-void shorteningAFraction(std::vector<ull>& fract) {
-    ull nwd = 0;
-    nwd = NWD(fract[0], fract[1]);
-    fract[0] = fract[0] / nwd;
-    fract[1] = fract[1] / nwd;
-    nwd = NWD(fract[2], fract[3]);
-    fract[2] /= nwd;
-    fract[3] /= nwd;
-    nwd = NWD(fract[4], fract[5]);
-    fract[4] /= nwd;
-    fract[5] /= nwd;
-}
-
-int main() {
-    std::vector<ull> side;
-    side.reserve(6);
-    int numberOfTests = 0;
-    char sign;
-    ull value = 0;
-    ull nwwX = 0;
-    ull nww = 0;
-    ull sideX = 0;
-    ull sideY = 0;
-    ull sideZ = 0;
-
     std::cin >> numberOfTests;
     while (numberOfTests--) {
-        for (int i = 0; i < 3; i++) {
-            std::cin >> value >> sign;
-            side.push_back(value);
-            std::cin >> value;
-            side.push_back(value);
-        }
+        std::cin >> a >> sign >> b >> c >> sign >> d >> e >> sign >> f;
+        if ((a % b == 0) && (c % d == 0) && (e % f == 0)) {
+            sideA = a / b;
+            sideB = c / b;
+            sideC = e / f;
+            test(sideA, sideB, sideC);
+        } else if ((a % b == 0) && (c % d == 0)) {
+            sideA = (a / b) * f;
+            sideB = (c / b) * f;
+            sideC = e;
+            test(sideA, sideB, sideC);
+        } else if ((a % b == 0) && (e % f == 0)) {
+            sideA = (a / b) * d;
+            sideC = (e / f) * d;
+            sideB = c;
+            test(sideA, sideB, sideC);
+        } else if ((c % d == 0) && (e % f == 0)) {
+            sideB = (c / d) * b;
+            sideC = (e / f) * b;
+            sideA = a;
+            test(sideA, sideB, sideC);
+        } else if (a % b == 0) {
+            nww = NWW(d, f);
+            sideB = (nww / d) * c;
+            sideC = (nww / f) * e;
+            sideA = (a / b) * nww;
+            test(sideA, sideB, sideC);
+        } else if (c % d == 0) {
+            nww = NWW(b, f);
+            sideA = (nww / b) * a;
+            sideC = (nww / f) * e;
+            sideB = (c / d) * nww;
+            test(sideA, sideB, sideC);
+        } else if (e % f == 0) {
+            nww = NWW(b, d);
+            sideA = (nww / b) * a;
+            sideB = (nww / d) * c;
+            sideC = (e / f) * nww;
+            test(sideA, sideB, sideC);
 
-        if ((side[0] == 0) || (side[1] == 0) || (side[2] == 0) || (side[3] == 0) || (side[4] == 0) || (side[5] == 0)) {
-            std::cout << "NIE" << std::endl;
         } else {
-            shorteningAFraction(side);
-
-            nwwX = NWW(side[1], side[3]);
-            nww = NWW(nwwX, side[5]);
-            sideX = (nww / side[1]) * side[0];
-            sideY = (nww / side[3]) * side[2];
-            sideZ = (nww / side[5]) * side[4];
-
-            Triangle Test(sideX, sideY, sideZ);
-
-            if (Test.triangleTest()) {
-                std::cout << "TAK" << std::endl;
-            } else {
-                std::cout << "NIE" << std::endl;
-            }
+            nwwX = NWW(b, d);
+            nww = NWW(nwwX, f);
+            sideA = (nww / b) * a;
+            sideB = (nww / d) * c;
+            sideC = (nww / f) * e;
+            test(sideA, sideB, sideC);
         }
-        side.clear();
     }
     return 0;
 }
